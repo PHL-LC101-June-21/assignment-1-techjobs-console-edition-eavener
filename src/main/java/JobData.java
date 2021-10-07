@@ -5,10 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -35,7 +32,7 @@ public class JobData {
         ArrayList<String> values = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
-            String aValue = row.get(field);
+            String aValue = row.get(field).toLowerCase();
 
             if (!values.contains(aValue)) {
                 values.add(aValue);
@@ -77,7 +74,7 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
             if (aValue.contains(value)) {
                 jobs.add(row);
@@ -97,9 +94,23 @@ public class JobData {
 
         // load data, if not already loaded
         loadData();
+        // go through allJobs and look for strings .contains, check every key
+        // continue to go to next listing after string found
+        //for the arrayList > for each HashMap > for each key > search all values
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> valueJobs = new ArrayList<>();
+
+        for (HashMap<String, String> map : allJobs) {
+                Set <String> keys = map.keySet();
+                for (String key : keys){
+                    String mapVal = map.get(key).toLowerCase();
+                   if (mapVal.contains(value)){
+                       valueJobs.add(map);
+                       break;
+                   }
+            }
+        }
+        return valueJobs;
     }
 
     /**
